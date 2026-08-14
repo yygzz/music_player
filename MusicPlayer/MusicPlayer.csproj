@@ -9,6 +9,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <!-- 显式指定 Windows 平台版本，避免 SDK 默认 TargetPlatformVersion=7.0 低于
+         SupportedOSPlatformVersion 触发 NETSDK1135（Windows 10 1809 及以上） -->
+    <TargetPlatformVersion>10.0.17763.0</TargetPlatformVersion>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
     <!-- 允许在非 Windows 环境（如 CI）下还原/编译 net8.0-windows 项目；运行时仍需 Windows -->
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
