@@ -9,16 +9,13 @@
         <SolidColorBrush x:Key="AccentBrush" Color="#59B8FF" />
         <SolidColorBrush x:Key="TextPrimaryBrush" Color="#F2F2F2" />
         <SolidColorBrush x:Key="TextSecondaryBrush" Color="#9BA3AE" />
-        <!-- 半透明玻璃卡片（叠在亚克力之上形成磨砂卡片） -->
-        <SolidColorBrush x:Key="CardBrush" Color="#1FFFFFFF" />
-        <SolidColorBrush x:Key="CardBorderBrush" Color="#14FFFFFF" />
         <SolidColorBrush x:Key="HoverBrush" Color="#1AFFFFFF" />
         <SolidColorBrush x:Key="PressedBrush" Color="#2EFFFFFF" />
 
         <!-- 图标字体：Windows 11 优先，回退到 MDL2 -->
         <FontFamily x:Key="IconFont">Segoe Fluent Icons, Segoe MDL2 Assets</FontFamily>
 
-        <!-- ============ 通用按钮：悬停时光晕由 Glow 附加属性驱动 ============ -->
+        <!-- ============ 通用按钮：悬停柔和淡入 + 轻微缩放（液体感） ============ -->
         <Style x:Key="GlowButtonStyle" TargetType="Button">
             <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
             <Setter Property="FontSize" Value="13" />
@@ -31,16 +28,52 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border x:Name="Root"
-                                CornerRadius="8"
+                                CornerRadius="12"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="1"
-                                Padding="{TemplateBinding Padding}">
+                                Padding="{TemplateBinding Padding}"
+                                RenderTransformOrigin="0.5,0.5">
+                            <Border.RenderTransform>
+                                <ScaleTransform/>
+                            </Border.RenderTransform>
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="Root" Property="Background" Value="{StaticResource HoverBrush}" />
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="Root"
+                                                             Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                             To="1.03" Duration="0:0:0.14">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                            <DoubleAnimation Storyboard.TargetName="Root"
+                                                             Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                             To="1.03" Duration="0:0:0.14">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="Root"
+                                                             Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                             To="1.0" Duration="0:0:0.14"/>
+                                            <DoubleAnimation Storyboard.TargetName="Root"
+                                                             Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                             To="1.0" Duration="0:0:0.14"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter TargetName="Root" Property="Background" Value="{StaticResource PressedBrush}" />
@@ -62,12 +95,48 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border x:Name="Root" CornerRadius="99" Background="{TemplateBinding Background}">
+                        <Border x:Name="Root" CornerRadius="99" Background="{TemplateBinding Background}"
+                                RenderTransformOrigin="0.5,0.5">
+                            <Border.RenderTransform>
+                                <ScaleTransform/>
+                            </Border.RenderTransform>
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="Root" Property="Background" Value="{StaticResource HoverBrush}" />
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="Root"
+                                                             Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                             To="1.06" Duration="0:0:0.12">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                            <DoubleAnimation Storyboard.TargetName="Root"
+                                                             Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                             To="1.06" Duration="0:0:0.12">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="Root"
+                                                             Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                             To="1.0" Duration="0:0:0.12"/>
+                                            <DoubleAnimation Storyboard.TargetName="Root"
+                                                             Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                             To="1.0" Duration="0:0:0.12"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter TargetName="Root" Property="Background" Value="{StaticResource PressedBrush}" />
@@ -89,15 +158,50 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border x:Name="Root" CornerRadius="99" Background="{TemplateBinding Background}">
+                        <Border x:Name="Root" CornerRadius="99" Background="{TemplateBinding Background}"
+                                RenderTransformOrigin="0.5,0.5">
+                            <Border.RenderTransform>
+                                <ScaleTransform/>
+                            </Border.RenderTransform>
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Root" Property="Opacity" Value="0.92" />
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="Root"
+                                                             Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                             To="1.08" Duration="0:0:0.12">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                            <DoubleAnimation Storyboard.TargetName="Root"
+                                                             Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                             To="1.08" Duration="0:0:0.12">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="Root"
+                                                             Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                             To="1.0" Duration="0:0:0.12"/>
+                                            <DoubleAnimation Storyboard.TargetName="Root"
+                                                             Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                             To="1.0" Duration="0:0:0.12"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="Root" Property="Opacity" Value="0.78" />
+                                <Setter TargetName="Root" Property="Opacity" Value="0.8" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -118,7 +222,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border x:Name="Root" CornerRadius="6" Background="{TemplateBinding Background}">
+                        <Border x:Name="Root" CornerRadius="8" Background="{TemplateBinding Background}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
                         <ControlTemplate.Triggers>
@@ -139,7 +243,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border x:Name="Root" CornerRadius="6" Background="{TemplateBinding Background}">
+                        <Border x:Name="Root" CornerRadius="8" Background="{TemplateBinding Background}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
                         <ControlTemplate.Triggers>
@@ -182,7 +286,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="RepeatButton">
-                        <Grid Height="4" VerticalAlignment="Center" Background="{StaticResource AccentBrush}" />
+                        <Border Height="5" CornerRadius="2.5" VerticalAlignment="Center" Background="{StaticResource AccentBrush}" />
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -193,7 +297,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="RepeatButton">
-                        <Grid Height="4" VerticalAlignment="Center" Background="#2EFFFFFF" />
+                        <Border Height="5" CornerRadius="2.5" VerticalAlignment="Center" Background="#2EFFFFFF" />
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -229,12 +333,19 @@
             </Setter>
         </Style>
 
-        <!-- 半透明圆角玻璃卡片 -->
+        <!-- 半透明磨砂玻璃卡片（无硬边框、垂直渐变、大圆角） -->
         <Style x:Key="GlassCardStyle" TargetType="Border">
-            <Setter Property="CornerRadius" Value="8" />
-            <Setter Property="Background" Value="{StaticResource CardBrush}" />
-            <Setter Property="BorderBrush" Value="{StaticResource CardBorderBrush}" />
-            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="16" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#2EFFFFFF" Offset="0"/>
+                        <GradientStop Color="#16FFFFFF" Offset="0.5"/>
+                        <GradientStop Color="#0AFFFFFF" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <!-- 分区小标题 -->

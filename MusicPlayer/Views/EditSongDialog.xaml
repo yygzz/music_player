@@ -1,0 +1,32 @@
+<Window x:Class="MusicPlayer.Views.EditSongDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="编辑歌曲信息" Width="380" SizeToContent="Height"
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
+        WindowStyle="None" Background="Transparent"
+        AllowsTransparency="False"
+        FontFamily="Segoe UI Variable, Segoe UI">
+    <Border CornerRadius="16" Margin="16" Background="#E6232323">
+        <StackPanel Margin="22,20">
+            <TextBlock Text="编辑歌曲信息" FontSize="17" FontWeight="SemiBold" Foreground="#F2F2F2"/>
+            <TextBlock x:Name="FileNameText" FontSize="11" Foreground="#9BA3AE" Margin="0,3,0,14" TextTrimming="CharacterEllipsis"/>
+
+            <TextBlock Text="标题" FontSize="12" Foreground="#9BA3AE"/>
+            <TextBox x:Name="TitleBox" Margin="0,4,0,12" Padding="9,6" Background="#16FFFFFF" BorderThickness="0" Foreground="#F2F2F2" CaretBrush="#59B8FF" FontSize="13.5"/>
+
+            <TextBlock Text="艺术家" FontSize="12" Foreground="#9BA3AE"/>
+            <TextBox x:Name="ArtistBox" Margin="0,4,0,12" Padding="9,6" Background="#16FFFFFF" BorderThickness="0" Foreground="#F2F2F2" CaretBrush="#59B8FF" FontSize="13.5"/>
+
+            <TextBlock Text="专辑" FontSize="12" Foreground="#9BA3AE"/>
+            <TextBox x:Name="AlbumBox" Margin="0,4,0,14" Padding="9,6" Background="#16FFFFFF" BorderThickness="0" Foreground="#F2F2F2" CaretBrush="#59B8FF" FontSize="13.5"/>
+
+            <CheckBox x:Name="WriteTagCheck" Content="同时写回音频文件标签" FontSize="12" Foreground="#9BA3AE" Margin="0,0,0,16"/>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="取消" Style="{StaticResource GlowButtonStyle}" MinWidth="80" Click="Cancel_Click"/>
+                <Button Content="保存" Style="{StaticResource GlowButtonStyle}" MinWidth="80" Margin="8,0,0,0"
+                        Background="{StaticResource AccentBrush}" Foreground="#101419" Click="Save_Click"/>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</Window>

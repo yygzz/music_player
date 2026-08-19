@@ -13,7 +13,9 @@ using System.Windows.Threading;
 using Microsoft.Win32;
 using MusicPlayer.Helpers;
 using MusicPlayer.Models;
+using MusicPlayer.Services;
 using MusicPlayer.Shell;
+using MusicPlayer.Views;
 
 namespace MusicPlayer;
 
@@ -37,13 +39,10 @@ public partial class MainWindow : Window
     private List<Song> _allSongs = new();
     private string _filterQuery = "";
     private string _folderPath = "";
+    private MetadataStore _metadataStore = null!;
 
     private static readonly string[] SupportedExts =
         { ".mp3", ".wav", ".m4a", ".flac", ".ogg", ".wma", ".aac" };
-
-    private static readonly string[] PaletteHex =
-        { "#FF5C8A", "#8B5CF6", "#59C2FF", "#FFB35C", "#2DD4BF",
-          "#F472B6", "#3B82F6", "#10B981", "#EC4899", "#F59E0B" };
 
     // 侧边栏拖拽排序状态
     private int _navDragIndex = -1;
@@ -54,6 +53,10 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         DataContext = this;
+
+        _metadataStore = new MetadataStore(Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            "MusicPlayer", "metadata.json"));
 
         PopulateNav();
         SetupPlayer();
@@ -75,7 +78,7 @@ public partial class MainWindow : Window
 
     private void NavList_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (_navDragIndex >= 0) return;            // 拖拽中不切换
+        if (_navIsDragging) return;            // 仅拖拽重排期间不切换页面
         if (NavList.SelectedItem is NavItem nav)
             ShowView(nav.ViewHint);
     }
@@ -110,6 +113,16 @@ public partial class MainWindow : Window
             _ => ""
         };
         RefreshStats();
+
+        var target = hint switch
+        {
+            "home" => (FrameworkElement)HomePanel,
+            "library" => (FrameworkElement)LibraryPanel,
+            "playlist" => (FrameworkElement)PlaylistPanel,
+            "settings" => (FrameworkElement)SettingsPanel,
+            _ => null
+        };
+        if (target is not null) AnimationFx.FadeInSlide(target);
     }
 
     private void SetWelcome()
@@ -139,37 +152,26 @@ public partial class MainWindow : Window
 
     private void StartBackgroundAnimations()
     {
-        AnimateSpot(Blob1, -80, 400, 140, 520, TimeSpan.FromSeconds(12));
-        AnimateSpot(Blob2, 380, 40, -60, 360, TimeSpan.FromSeconds(16));
-        AnimateSpot(Blob3, 920, 1300, 60, 460, TimeSpan.FromSeconds(14));
-        AnimateSpot(Blob4, 660, 1080, 520, 100, TimeSpan.FromSeconds(18));
+        AnimateSpot(Blob1, 0, 480, 0, 380, TimeSpan.FromSeconds(12));
+        AnimateSpot(Blob2, 0, -340, 0, 420, TimeSpan.FromSeconds(16));
+        AnimateSpot(Blob3, 0, 400, -20, 400, TimeSpan.FromSeconds(14));
+        AnimateSpot(Blob4, 0, 440, -420, 420, TimeSpan.FromSeconds(18));
     }
 
     private static void AnimateSpot(UIElement element,
-        double fromLeft, double toLeft, double fromTop, double toTop, TimeSpan duration)
+        double fromX, double toX, double fromY, double toY, TimeSpan duration)
     {
-        var left = new DoubleAnimation(fromLeft, toLeft, new Duration(duration))
-        {
-            AutoReverse = true,
-            RepeatBehavior = RepeatBehavior.Forever,
-            EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut }
-        };
-        Storyboard.SetTarget(left, element);
-        Storyboard.SetTargetProperty(left, new PropertyPath(Canvas.LeftProperty));
+        if (element.RenderTransform is not TranslateTransform t) return;
 
-        var top = new DoubleAnimation(fromTop, toTop, new Duration(duration))
+        var easing = new SineEase { EasingMode = EasingMode.EaseInOut };
+        t.BeginAnimation(TranslateTransform.XProperty, new DoubleAnimation(fromX, toX, duration)
         {
-            AutoReverse = true,
-            RepeatBehavior = RepeatBehavior.Forever,
-            EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut }
-        };
-        Storyboard.SetTarget(top, element);
-        Storyboard.SetTargetProperty(top, new PropertyPath(Canvas.TopProperty));
-
-        var storyboard = new Storyboard();
-        storyboard.Children.Add(left);
-        storyboard.Children.Add(top);
-        storyboard.Begin((FrameworkElement)element, true);
+            AutoReverse = true, RepeatBehavior = RepeatBehavior.Forever, EasingFunction = easing
+        });
+        t.BeginAnimation(TranslateTransform.YProperty, new DoubleAnimation(fromY, toY, duration)
+        {
+            AutoReverse = true, RepeatBehavior = RepeatBehavior.Forever, EasingFunction = easing
+        });
     }
 
     #endregion
@@ -219,10 +221,10 @@ public partial class MainWindow : Window
     {
         if (target.RenderTransform is not ScaleTransform scale) return;
         scale.BeginAnimation(ScaleTransform.ScaleXProperty, null);
-        var animation = new DoubleAnimation(to, duration)
-        {
-            EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
-        };
+        var ease = to > 0.0
+            ? (IEasingFunction)new BackEase { EasingMode = EasingMode.EaseOut, Amplitude = 0.4 }
+            : new CubicEase { EasingMode = EasingMode.EaseOut };
+        var animation = new DoubleAnimation(to, duration) { EasingFunction = ease };
         scale.BeginAnimation(ScaleTransform.ScaleXProperty, animation);
     }
 
@@ -283,26 +285,11 @@ public partial class MainWindow : Window
             ShowView(HintOfCurrent());
     }
 
-    private static Song ParseFile(string file, int number)
+    private Song ParseFile(string file, int number)
     {
-        var fileName = Path.GetFileNameWithoutExtension(file);
-        var title = fileName;
-        var artist = "未知艺术家";
-
-        var sep = fileName.IndexOf(" - ", StringComparison.Ordinal);
-        if (sep > 0)
-        {
-            artist = fileName[..sep].Trim();
-            title = fileName[(sep + 3)..].Trim();
-        }
-        if (title.Length == 0) title = fileName.Length == 0 ? "未知歌曲" : fileName;
-
-        var dir = Path.GetDirectoryName(file);
-        var album = !string.IsNullOrEmpty(dir) && dir != Path.GetPathRoot(file)
-            ? new DirectoryInfo(dir).Name
-            : "未知专辑";
-
-        return new Song(number, title, artist, album, file);
+        var meta = MetadataService.Read(file, number);
+        meta = _metadataStore.Apply(file, meta);
+        return new Song(number, meta.Title, meta.Artist, meta.Album, file);
     }
 
     private string HintOfCurrent()
@@ -324,12 +311,11 @@ public partial class MainWindow : Window
 
         foreach (var album in distinct.OrderBy(a => a, StringComparer.OrdinalIgnoreCase))
         {
-            var brushColor = PaletteHex[colorIdx++ % PaletteHex.Length];
             Albums.Add(new AlbumTile
             {
                 Album = album,
                 Count = _allSongs.Count(s => s.Album == album),
-                Brush = (Brush)new BrushConverter().ConvertFrom(brushColor)!,
+                Brush = Palette.At(colorIdx++),
                 Badge = album.Length > 0 ? album[..1].ToUpperInvariant() : "♪"
             });
         }
@@ -359,7 +345,12 @@ public partial class MainWindow : Window
 
         _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(250) };
         _timer.Tick += (_, _) => OnTimerTick();
-        _timer.Start();
+        // 定时器按需启停：仅在播放时运行，避免空闲空转
+    }
+
+    private void EnsureTimerRunning()
+    {
+        if (!_timer.IsEnabled) _timer.Start();
     }
 
     private void OnMediaOpened()
@@ -399,6 +390,7 @@ public partial class MainWindow : Window
             _player.Play();
             _isPaused = false;
             PlayPauseIcon.Text = "\uE769"; // 暂停图标
+            EnsureTimerRunning();
 
             SeekSlider.Value = 0;
             SeekTimeText.Text = "0:00";
@@ -434,12 +426,14 @@ public partial class MainWindow : Window
             _player.Play();
             _isPaused = false;
             PlayPauseIcon.Text = "\uE769";
+            EnsureTimerRunning();
         }
         else
         {
             _player.Pause();
             _isPaused = true;
             PlayPauseIcon.Text = "\uE768";
+            _timer.Stop();
         }
     }
 
@@ -471,6 +465,32 @@ public partial class MainWindow : Window
     {
         if (LibraryList.SelectedItem is Song s)
             PlaySong(Songs.IndexOf(s));
+    }
+
+    private void LibraryList_EditSong(object sender, RoutedEventArgs e)
+    {
+        if (LibraryList.SelectedItem is not Song s) return;
+
+        var dlg = new EditSongDialog(s.FilePath, s.Title, s.Artist, s.Album)
+        {
+            Owner = this,
+            WindowStartupLocation = WindowStartupLocation.CenterOwner
+        };
+        if (dlg.ShowDialog() != true) return;
+
+        s.Title = dlg.TitleValue;
+        s.Artist = dlg.ArtistValue;
+        s.Album = dlg.AlbumValue;
+
+        _metadataStore.Set(s.FilePath, s.Title, s.Artist, s.Album);
+        if (dlg.WriteTag)
+        {
+            try { MetadataService.SaveTag(s.FilePath, new SongMetadata(s.Title, s.Artist, s.Album, s.FilePath)); }
+            catch { /* 写标签失败不致命 */ }
+        }
+
+        RebuildAlbums();
+        RefreshStats();
     }
 
     private void QueueList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -563,16 +583,26 @@ public partial class MainWindow : Window
 
     private void FinishNavDrag()
     {
+        // 重入守卫：ReleaseMouseCapture() 会同步触发 LostMouseCapture → 再次进入本方法，
+        // 以及 MouseLeave 也会触发；无拖拽状态时直接返回，避免重复调用 ShowView。
+        if (_navDragIndex < 0 && !_navIsDragging) return;
+
+        var wasDragging = _navIsDragging;   // 先记录：是不是真的拖拽重排过
+
         if (_navDragIndex >= 0 &&
             NavList.ItemContainerGenerator.ContainerFromIndex(_navDragIndex) is ListBoxItem item)
         {
             item.Opacity = 1.0;
-            NavList.SelectedIndex = _navDragIndex;
         }
 
         _navDragIndex = -1;
         _navIsDragging = false;
         NavList.ReleaseMouseCapture();
+
+        // 普通点击已由 SelectionChanged 切页；这里只在拖拽重排后补一次，
+        // 避免重复触发淡入动画导致闪烁。
+        if (wasDragging && NavList.SelectedItem is NavItem nav)
+            ShowView(nav.ViewHint);
     }
 
     #endregion
@@ -599,6 +629,13 @@ public partial class MainWindow : Window
 
     private void ToggleMaximize()
         => WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
+
+    private void Window_Closed(object? sender, EventArgs e)
+    {
+        _timer?.Stop();
+        _player?.Stop();
+        _player?.Close();
+    }
 
     #endregion
 }

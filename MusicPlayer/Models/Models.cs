@@ -33,9 +33,28 @@ public class NavItem : ObservableObject
 public class Song : ObservableObject
 {
     public int Number { get; set; }
-    public string Title { get; set; } = "未知歌曲";
-    public string Artist { get; set; } = "未知艺术家";
-    public string Album { get; set; } = "未知专辑";
+
+    private string _title = "未知歌曲";
+    public string Title
+    {
+        get => _title;
+        set { _title = value; OnPropertyChanged(); OnPropertyChanged(nameof(ArtistAlbum)); }
+    }
+
+    private string _artist = "未知艺术家";
+    public string Artist
+    {
+        get => _artist;
+        set { _artist = value; OnPropertyChanged(); OnPropertyChanged(nameof(ArtistAlbum)); }
+    }
+
+    private string _album = "未知专辑";
+    public string Album
+    {
+        get => _album;
+        set { _album = value; OnPropertyChanged(); OnPropertyChanged(nameof(ArtistAlbum)); }
+    }
+
     public string FilePath { get; set; } = string.Empty;
 
     private string _durationText = "—";
