@@ -6,9 +6,6 @@
     <Application.Resources>
 
         <!-- ============ 颜色 / 画刷 ============ -->
-        <Color x:Key="AccentColor">#59B8FF</Color>
-        <Color x:Key="AccentSoftColor">#4F8FC4</Color>
-
         <SolidColorBrush x:Key="AccentBrush" Color="#59B8FF" />
         <SolidColorBrush x:Key="TextPrimaryBrush" Color="#F2F2F2" />
         <SolidColorBrush x:Key="TextSecondaryBrush" Color="#9BA3AE" />
