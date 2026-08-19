@@ -31,6 +31,7 @@ public partial class MainWindow : Window
     private Song? _currentSong;
     private bool _isPaused;
     private bool _isSeeking;
+    private bool _syncingVolume;
 
     // ---------- 曲库状态 ----------
     private List<Song> _allSongs = new();
@@ -492,7 +493,23 @@ public partial class MainWindow : Window
     }
 
     private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        => _player.Volume = e.NewValue / 100.0;
+    {
+        _player.Volume = e.NewValue / 100.0;
+        if (_syncingVolume) return;
+
+        // 设置页与底部播放栏各有一个音量滑块，双向同步避免二者显示不一致
+        _syncingVolume = true;
+        try
+        {
+            var other = ReferenceEquals(sender, VolumeSlider) ? BottomVolumeSlider : VolumeSlider;
+            if (other != null && Math.Abs(other.Value - e.NewValue) > 0.01)
+                other.Value = e.NewValue;
+        }
+        finally
+        {
+            _syncingVolume = false;
+        }
+    }
 
     private static string Fmt(double seconds)
     {

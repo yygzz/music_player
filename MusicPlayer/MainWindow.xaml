@@ -18,7 +18,7 @@
 
     <Grid>
         <!-- ============ 背景层：缓慢移动的彩色光斑 ============ -->
-        <Canvas x:Name="BgCanvas" IsHitTestVisible="False" ClipToBounds="True">
+        <Canvas IsHitTestVisible="False" ClipToBounds="True">
             <Ellipse x:Name="Blob1" Width="380" Height="380" Canvas.Left="-80" Canvas.Top="140" IsHitTestVisible="False">
                 <Ellipse.Fill>
                     <RadialGradientBrush>
@@ -185,7 +185,7 @@
                     </Grid.ColumnDefinitions>
 
                     <!-- 搜索框：聚焦时下划线从点击处向两侧展开 -->
-                    <Border x:Name="SearchBorder" Width="360" Height="40" HorizontalAlignment="Left"
+                    <Border Width="360" Height="40" HorizontalAlignment="Left"
                             VerticalAlignment="Top" CornerRadius="8" Background="#14FFFFFF"
                             BorderBrush="#1AFFFFFF" BorderThickness="1">
                         <Grid>
@@ -195,7 +195,7 @@
                                      PreviewMouseLeftButtonDown="SearchTextBox_PreviewMouseLeftButtonDown"
                                      LostKeyboardFocus="SearchTextBox_LostKeyboardFocus"
                                      TextChanged="SearchTextBox_TextChanged"/>
-                            <TextBlock x:Name="SearchIconText" Text="&#xE721;" FontFamily="{StaticResource IconFont}" FontSize="14"
+                            <TextBlock Text="&#xE721;" FontFamily="{StaticResource IconFont}" FontSize="14"
                                        Foreground="{StaticResource TextSecondaryBrush}"
                                        Margin="12,0,0,0" VerticalAlignment="Center" IsHitTestVisible="False"/>
                             <TextBlock x:Name="SearchPlaceholder" Text="搜索歌曲 / 艺术家 / 专辑"
@@ -301,7 +301,7 @@
                                 <!-- 专辑列表 -->
                                 <TextBlock x:Name="AlbumsSectionTitle" Text="我的专辑" Style="{StaticResource SectionLabelStyle}"
                                            Margin="2,22,0,10"/>
-                                <ItemsControl x:Name="AlbumList" ItemsSource="{Binding Albums}">
+                                <ItemsControl ItemsSource="{Binding Albums}">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <WrapPanel/>
@@ -603,7 +603,7 @@
                                     Click="PrevButton_Click" ToolTip="上一首" fx:Glow.IsEnabled="True">
                                 <TextBlock Text="&#xE892;" FontFamily="{StaticResource IconFont}" FontSize="12"/>
                             </Button>
-                            <Button x:Name="NowPlayButton" Style="{StaticResource RoundPlayButtonStyle}" Margin="10,0"
+                            <Button Style="{StaticResource RoundPlayButtonStyle}" Margin="10,0"
                                     Click="PlayPauseButton_Click" ToolTip="播放 / 暂停" fx:Glow.IsEnabled="True">
                                 <TextBlock x:Name="PlayPauseIcon" Text="&#xE768;" FontFamily="{StaticResource IconFont}" FontSize="18"/>
                             </Button>
