@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fx="clr-namespace:MusicPlayer.Effects"
         mc:Ignorable="d"
-        Title="Music Player"
+        Title="音乐播放器"
         Width="1180" Height="760"
         MinWidth="1000" MinHeight="640"
         WindowStartupLocation="CenterScreen"
@@ -14,69 +14,50 @@
         ResizeMode="CanResize"
         Background="Transparent"
         FontFamily="Segoe UI Variable, Segoe UI"
-        TextOptions.TextRenderingMode="ClearType"
         SourceInitialized="Window_SourceInitialized">
 
     <Grid>
-        <!-- ================================================================
-             背景层：缓慢移动的彩色光斑（Canvas + Ellipse + BlurEffect 动画）
-             ================================================================ -->
+        <!-- ============ 背景层：缓慢移动的彩色光斑 ============ -->
         <Canvas x:Name="BgCanvas" IsHitTestVisible="False" ClipToBounds="True">
-
-            <Ellipse x:Name="Blob1" Width="360" Height="360"
-                     Canvas.Left="-80" Canvas.Top="140" IsHitTestVisible="False">
+            <Ellipse x:Name="Blob1" Width="380" Height="380" Canvas.Left="-80" Canvas.Top="140" IsHitTestVisible="False">
                 <Ellipse.Fill>
                     <RadialGradientBrush>
-                        <GradientStop Color="#4D59C2FF" Offset="0"/>
+                        <GradientStop Color="#5A59C2FF" Offset="0"/>
                         <GradientStop Color="#0059C2FF" Offset="1"/>
                     </RadialGradientBrush>
                 </Ellipse.Fill>
-                <Ellipse.Effect>
-                    <BlurEffect Radius="90"/>
-                </Ellipse.Effect>
+                <Ellipse.Effect><BlurEffect Radius="95"/></Ellipse.Effect>
             </Ellipse>
-
-            <Ellipse x:Name="Blob2" Width="320" Height="320"
-                     Canvas.Left="360" Canvas.Top="-60" IsHitTestVisible="False">
+            <Ellipse x:Name="Blob2" Width="340" Height="340" Canvas.Left="380" Canvas.Top="-60" IsHitTestVisible="False">
                 <Ellipse.Fill>
                     <RadialGradientBrush>
-                        <GradientStop Color="#4DFF5CA8" Offset="0"/>
+                        <GradientStop Color="#5AFF5CA8" Offset="0"/>
                         <GradientStop Color="#00FF5CA8" Offset="1"/>
                     </RadialGradientBrush>
                 </Ellipse.Fill>
-                <Ellipse.Effect>
-                    <BlurEffect Radius="80"/>
-                </Ellipse.Effect>
+                <Ellipse.Effect><BlurEffect Radius="85"/></Ellipse.Effect>
             </Ellipse>
-
-            <Ellipse x:Name="Blob3" Width="420" Height="420"
-                     Canvas.Left="900" Canvas.Top="80" IsHitTestVisible="False">
+            <Ellipse x:Name="Blob3" Width="440" Height="440" Canvas.Left="900" Canvas.Top="80" IsHitTestVisible="False">
                 <Ellipse.Fill>
                     <RadialGradientBrush>
-                        <GradientStop Color="#408B7CF6" Offset="0"/>
+                        <GradientStop Color="#4D8B7CF6" Offset="0"/>
                         <GradientStop Color="#008B7CF6" Offset="1"/>
                     </RadialGradientBrush>
                 </Ellipse.Fill>
-                <Ellipse.Effect>
-                    <BlurEffect Radius="100"/>
-                </Ellipse.Effect>
+                <Ellipse.Effect><BlurEffect Radius="105"/></Ellipse.Effect>
             </Ellipse>
-
-            <Ellipse x:Name="Blob4" Width="300" Height="300"
-                     Canvas.Left="640" Canvas.Top="520" IsHitTestVisible="False">
+            <Ellipse x:Name="Blob4" Width="320" Height="320" Canvas.Left="640" Canvas.Top="520" IsHitTestVisible="False">
                 <Ellipse.Fill>
                     <RadialGradientBrush>
-                        <GradientStop Color="#40FFB35C" Offset="0"/>
+                        <GradientStop Color="#4DFFB35C" Offset="0"/>
                         <GradientStop Color="#00FFB35C" Offset="1"/>
                     </RadialGradientBrush>
                 </Ellipse.Fill>
-                <Ellipse.Effect>
-                    <BlurEffect Radius="85"/>
-                </Ellipse.Effect>
+                <Ellipse.Effect><BlurEffect Radius="90"/></Ellipse.Effect>
             </Ellipse>
         </Canvas>
 
-        <!-- 一层很淡的暗角渐变，增加纵深感 -->
+        <!-- 淡暗角渐变：增强纵深 -->
         <Rectangle IsHitTestVisible="False">
             <Rectangle.Fill>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
@@ -87,9 +68,7 @@
             </Rectangle.Fill>
         </Rectangle>
 
-        <!-- ================================================================
-             主布局：左侧侧边栏 + 右侧内容区
-             ================================================================ -->
+        <!-- ============ 主布局 ============ -->
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -97,9 +76,7 @@
             </Grid.ColumnDefinitions>
 
             <!-- ============ 侧边栏（半透明圆角毛玻璃卡片） ============ -->
-            <Border Style="{StaticResource GlassCardStyle}"
-                    Width="236" Margin="16,16,10,16"
-                    VerticalAlignment="Stretch">
+            <Border Style="{StaticResource GlassCardStyle}" Width="228" Margin="16,16,10,16" VerticalAlignment="Stretch">
                 <Grid Margin="8">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -107,23 +84,20 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <!-- Logo / 标题 -->
                     <StackPanel Orientation="Horizontal" Margin="10,10,10,12">
-                        <Border Width="32" Height="32" CornerRadius="7" Background="{StaticResource AccentBrush}">
-                            <TextBlock Text="&#xE8D6;" FontFamily="{StaticResource IconFont}" FontSize="16"
+                        <Border Width="34" Height="34" CornerRadius="7" Background="{StaticResource AccentBrush}">
+                            <TextBlock Text="&#xE8D6;" FontFamily="{StaticResource IconFont}" FontSize="17"
                                        Foreground="#101419" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
-                            <TextBlock Text="Music Player" FontSize="15" FontWeight="SemiBold"/>
-                            <TextBlock Text="Windows 11 Fluent" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}"/>
+                            <TextBlock Text="音乐播放器" FontSize="15" FontWeight="SemiBold"/>
+                            <TextBlock Text="Fluent · 本地曲库" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}"/>
                         </StackPanel>
                     </StackPanel>
 
                     <!-- 可拖拽排序的图标导航列表 -->
-                    <ListBox x:Name="NavList" Grid.Row="1"
-                             Margin="0,0,0,8"
-                             Background="Transparent"
-                             BorderThickness="0"
+                    <ListBox x:Name="NavList" Grid.Row="1" Margin="0,0,0,8"
+                             Background="Transparent" BorderThickness="0"
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                              ScrollViewer.VerticalScrollBarVisibility="Auto"
                              PreviewMouseLeftButtonDown="NavList_PreviewMouseLeftButtonDown"
@@ -131,6 +105,7 @@
                              PreviewMouseLeftButtonUp="NavList_PreviewMouseLeftButtonUp"
                              MouseLeave="NavList_MouseLeave"
                              LostMouseCapture="NavList_LostMouseCapture"
+                             SelectionChanged="NavList_SelectionChanged"
                              ItemsSource="{Binding NavItems}">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
@@ -141,18 +116,16 @@
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="ListBoxItem">
-                                            <Border x:Name="ItemBorder" Margin="2,2" Padding="10,8"
+                                            <Border x:Name="ItemBorder" Margin="2,2" Padding="10,9"
                                                     CornerRadius="6" Background="Transparent">
                                                 <Grid>
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="26"/>
                                                         <ColumnDefinition Width="*"/>
                                                     </Grid.ColumnDefinitions>
-                                                    <!-- 选中时的亚克力光点 -->
                                                     <Ellipse x:Name="GlowDot" Width="22" Height="22" Margin="-4,0,0,0"
                                                              HorizontalAlignment="Left" VerticalAlignment="Center"
-                                                             Fill="{StaticResource AccentBrush}" Opacity="0"
-                                                             IsHitTestVisible="False">
+                                                             Fill="{StaticResource AccentBrush}" Opacity="0" IsHitTestVisible="False">
                                                         <Ellipse.Effect><BlurEffect Radius="12"/></Ellipse.Effect>
                                                     </Ellipse>
                                                     <TextBlock x:Name="IconText" Text="{Binding Glyph}"
@@ -183,14 +156,14 @@
                         </ListBox.ItemContainerStyle>
                     </ListBox>
 
-                    <!-- 底部：设置 -->
+                    <!-- 底部快捷入口 -->
                     <Button Grid.Row="2" Margin="2,4,2,2" HorizontalContentAlignment="Left"
-                            Style="{StaticResource GlowButtonStyle}"
+                            Style="{StaticResource GlowButtonStyle}" Click="SettingsNavButton_Click"
                             fx:Glow.IsEnabled="True">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE713;" FontFamily="{StaticResource IconFont}" FontSize="16"
                                        VerticalAlignment="Center" Foreground="{StaticResource TextSecondaryBrush}"/>
-                            <TextBlock Text="Settings" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="设置" Margin="10,0,0,0" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
                 </Grid>
@@ -198,39 +171,40 @@
 
             <!-- ============ 右侧内容区 ============ -->
             <Grid Grid.Column="1" Margin="0,16,16,16">
-
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <!-- 顶部栏：搜索框 + 窗口控制按钮（可拖拽移动窗口） -->
-                <Grid x:Name="TopBar" Height="48"
-                      MouseLeftButtonDown="TopBar_MouseLeftButtonDown">
+                <!-- 顶部栏：搜索框 + 窗口控制 -->
+                <Grid x:Name="TopBar" Height="48" MouseLeftButtonDown="TopBar_MouseLeftButtonDown">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- 搜索框：聚焦时底部亮线下划线从点击处向两侧展开 -->
+                    <!-- 搜索框：聚焦时下划线从点击处向两侧展开 -->
                     <Border x:Name="SearchBorder" Width="360" Height="40" HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            CornerRadius="8" Background="#14FFFFFF"
+                            VerticalAlignment="Top" CornerRadius="8" Background="#14FFFFFF"
                             BorderBrush="#1AFFFFFF" BorderThickness="1">
                         <Grid>
                             <TextBox x:Name="SearchTextBox"
                                      Style="{StaticResource SearchTextBoxStyle}"
-                                     Padding="36,0,10,0"
+                                     Padding="40,0,10,0"
                                      PreviewMouseLeftButtonDown="SearchTextBox_PreviewMouseLeftButtonDown"
-                                     LostKeyboardFocus="SearchTextBox_LostKeyboardFocus"/>
-                            <TextBlock Text="&#xE721;" FontFamily="{StaticResource IconFont}" FontSize="14"
+                                     LostKeyboardFocus="SearchTextBox_LostKeyboardFocus"
+                                     TextChanged="SearchTextBox_TextChanged"/>
+                            <TextBlock x:Name="SearchIconText" Text="&#xE721;" FontFamily="{StaticResource IconFont}" FontSize="14"
                                        Foreground="{StaticResource TextSecondaryBrush}"
-                                       Margin="12,0,0,0" IsHitTestVisible="False"/>
+                                       Margin="12,0,0,0" VerticalAlignment="Center" IsHitTestVisible="False"/>
+                            <TextBlock x:Name="SearchPlaceholder" Text="搜索歌曲 / 艺术家 / 专辑"
+                                       Foreground="{StaticResource TextSecondaryBrush}" FontSize="13.5"
+                                       Margin="40,0,10,0" VerticalAlignment="Center" IsHitTestVisible="False"/>
                             <Rectangle x:Name="SearchUnderline" Height="2" RadiusX="1" RadiusY="1"
                                        Fill="{StaticResource AccentBrush}"
                                        Margin="6,0,6,0" VerticalAlignment="Bottom"
-                                       IsHitTestVisible="False"
-                                       RenderTransformOrigin="0,0">
+                                       IsHitTestVisible="False" RenderTransformOrigin="0,0">
                                 <Rectangle.RenderTransform>
                                     <ScaleTransform CenterX="0" ScaleX="0"/>
                                 </Rectangle.RenderTransform>
@@ -238,160 +212,413 @@
                         </Grid>
                     </Border>
 
-                    <!-- 窗口控制按钮 -->
                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top">
-                        <Button Style="{StaticResource WindowButtonStyle}" fx:Glow.IsEnabled="True"
-                                Click="MinimizeButton_Click"
-                                ToolTip="最小化">
+                        <Button Style="{StaticResource WindowButtonStyle}" Click="MinimizeButton_Click" ToolTip="最小化">
                             <TextBlock Text="&#xE921;" FontFamily="{StaticResource IconFont}"/>
                         </Button>
-                        <Button Style="{StaticResource WindowButtonStyle}" fx:Glow.IsEnabled="True"
-                                Click="MaximizeRestoreButton_Click"
-                                ToolTip="最大化/还原">
+                        <Button Style="{StaticResource WindowButtonStyle}" Click="MaximizeRestoreButton_Click" ToolTip="最大化/还原">
                             <TextBlock Text="&#xE922;" FontFamily="{StaticResource IconFont}"/>
                         </Button>
-                        <Button Style="{StaticResource WindowCloseButtonStyle}" fx:Glow.IsEnabled="True"
-                                Click="CloseButton_Click"
-                                ToolTip="关闭">
+                        <Button Style="{StaticResource WindowCloseButtonStyle}" Click="CloseButton_Click" ToolTip="关闭">
                             <TextBlock Text="&#xE8BB;" FontFamily="{StaticResource IconFont}"/>
                         </Button>
                     </StackPanel>
                 </Grid>
 
-                <!-- 主体：正在播放 + 播放列表 -->
-                <Grid Grid.Row="1" Margin="0,10,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                <!-- ============ 内容面板容器 ============ -->
+                <Grid Grid.Row="1" Margin="0,12,0,0">
 
-                    <!-- ============ 正在播放卡片 ============ -->
-                    <Border Style="{StaticResource GlassCardStyle}" Width="360" Margin="0,0,12,0">
-                        <Grid Margin="20">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
+                    <!-- 页面标题栏 -->
+                    <Grid VerticalAlignment="Top">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock x:Name="PageTitleText" FontSize="24" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="PageSubtitleText" Grid.Column="1" Margin="14,0,0,0"
+                                   FontSize="13" Foreground="{StaticResource TextSecondaryBrush}"
+                                   VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                    </Grid>
 
-                            <TextBlock Text="NOW PLAYING" Style="{StaticResource SectionLabelStyle}"/>
+                    <!-- ===== 首页 ===== -->
+                    <Grid x:Name="HomePanel" Margin="0,48,0,0">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                            <StackPanel Margin="0,4,0,0">
+                                <TextBlock x:Name="WelcomeText" FontSize="30" FontWeight="SemiBold" Text="欢迎"/>
+                                <TextBlock Text="从你的文件夹导入音乐，开始聆听。" FontSize="13"
+                                           Foreground="{StaticResource TextSecondaryBrush}" Margin="0,6,0,0"/>
 
-                            <!-- 封面 + 信息 -->
-                            <Grid Grid.Row="1" Margin="0,16,0,0">
-                                <Border Width="168" Height="168" CornerRadius="8"
-                                        HorizontalAlignment="Left" VerticalAlignment="Top">
-                                    <Border.Background>
-                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                            <GradientStop Color="#FF5C8A" Offset="0"/>
-                                            <GradientStop Color="#8B5CF6" Offset="0.55"/>
-                                            <GradientStop Color="#59C2FF" Offset="1"/>
-                                        </LinearGradientBrush>
-                                    </Border.Background>
-                                    <Border.Effect><DropShadowEffect BlurRadius="24" ShadowDepth="0" Opacity="0.45" Color="#000000"/></Border.Effect>
-                                    <TextBlock Text="&#xE8D6;" FontFamily="{StaticResource IconFont}" FontSize="54"
-                                               Foreground="#66FFFFFF" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                                <StackPanel Margin="184,4,0,0" VerticalAlignment="Top">
-                                    <TextBlock Text="Midnight Bloom" FontSize="21" FontWeight="SemiBold"
-                                               TextTrimming="CharacterEllipsis"/>
-                                    <TextBlock Text="Lumen" FontSize="13" Foreground="{StaticResource TextSecondaryBrush}"
-                                               Margin="0,4,0,0"/>
-                                    <TextBlock Text="Neon City Nights · 2026" FontSize="12"
-                                               Foreground="{StaticResource TextSecondaryBrush}" Margin="0,14,0,0"/>
-                                </StackPanel>
-                            </Grid>
-
-                            <!-- 播放控制 -->
-                            <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,22,0,0"
-                                        HorizontalAlignment="Center">
-                                <Button Style="{StaticResource RoundIconButtonStyle}" fx:Glow.IsEnabled="True"
-                                        ToolTip="上一首" Width="36" Height="36">
-                                    <TextBlock Text="&#xE892;" FontFamily="{StaticResource IconFont}" FontSize="12"/>
-                                </Button>
-                                <Button Style="{StaticResource RoundPlayButtonStyle}" fx:Glow.IsEnabled="True"
-                                        Margin="14,0" ToolTip="播放/暂停">
-                                    <TextBlock Text="&#xE768;" FontFamily="{StaticResource IconFont}" FontSize="18"/>
-                                </Button>
-                                <Button Style="{StaticResource RoundIconButtonStyle}" fx:Glow.IsEnabled="True"
-                                        ToolTip="下一首" Width="36" Height="36">
-                                    <TextBlock Text="&#xE893;" FontFamily="{StaticResource IconFont}" FontSize="12"/>
-                                </Button>
-                            </StackPanel>
-
-                            <!-- 进度条 -->
-                            <Grid Grid.Row="3" Margin="0,22,0,0">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <Slider Grid.Row="0" Style="{StaticResource ProgressSliderStyle}" Minimum="0"
-                                        Maximum="100" Value="42"/>
-                                <Grid Grid.Row="1" Margin="0,6,0,0">
-                                    <TextBlock Text="1:24" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}"/>
-                                    <TextBlock Text="3:24" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}"
-                                               HorizontalAlignment="Right"/>
+                                <!-- 主导航卡片 -->
+                                <Grid Margin="0,22,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="12"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Style="{StaticResource GlassCardStyle}" Padding="20,18">
+                                        <StackPanel>
+                                            <TextBlock Text="播放音乐" FontSize="16" FontWeight="SemiBold"/>
+                                            <TextBlock Text="扫描本地文件夹，读取其中的歌曲并播放。"
+                                                       FontSize="12.5" Foreground="{StaticResource TextSecondaryBrush}"
+                                                       TextWrapping="Wrap" Margin="0,6,0,14"/>
+                                            <Button Style="{StaticResource GlowButtonStyle}" HorizontalAlignment="Left"
+                                                    Click="ImportFolderButton_Click" fx:Glow.IsEnabled="True">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="&#xE8B7;" FontFamily="{StaticResource IconFont}" FontSize="15" VerticalAlignment="Center"/>
+                                                    <TextBlock Text="导入音乐文件夹" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Button>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border Grid.Column="2" Style="{StaticResource GlassCardStyle}" Padding="20,18">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Text="曲库概览" FontSize="16" FontWeight="SemiBold"/>
+                                            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,14,0,0">
+                                                <StackPanel>
+                                                    <TextBlock x:Name="HomeSongCount" Text="0" FontSize="30" FontWeight="SemiBold"/>
+                                                    <TextBlock Text="首歌曲" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}"/>
+                                                </StackPanel>
+                                                <StackPanel Margin="36,0,0,0">
+                                                    <TextBlock x:Name="HomeAlbumCount" Text="0" FontSize="30" FontWeight="SemiBold"/>
+                                                    <TextBlock Text="张专辑" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}"/>
+                                                </StackPanel>
+                                                <Button Style="{StaticResource GlowButtonStyle}" Margin="30,0,0,0"
+                                                        VerticalAlignment="Center" Click="PlayAllButton_Click" fx:Glow.IsEnabled="True">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="&#xE768;" FontFamily="{StaticResource IconFont}" FontSize="15" VerticalAlignment="Center"/>
+                                                        <TextBlock Text="播放全部" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Button>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
                                 </Grid>
-                            </Grid>
-                        </Grid>
-                    </Border>
 
-                    <!-- ============ 播放列表卡片 ============ -->
-                    <Border Grid.Column="1" Style="{StaticResource GlassCardStyle}">
-                        <Grid Margin="20,18,20,16">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-
-                            <TextBlock Text="UP NEXT" Style="{StaticResource SectionLabelStyle}"/>
-                            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,12,0,10">
-                                <TextBlock Text="Neon City Nights" FontSize="18" FontWeight="SemiBold"/>
-                                <TextBlock Text="  ·  8 tracks" FontSize="13" Foreground="{StaticResource TextSecondaryBrush}"
-                                           VerticalAlignment="Center"/>
-                            </StackPanel>
-
-                            <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto"
-                                          HorizontalScrollBarVisibility="Disabled">
-                                <ItemsControl ItemsSource="{Binding Songs}">
+                                <!-- 专辑列表 -->
+                                <TextBlock x:Name="AlbumsSectionTitle" Text="我的专辑" Style="{StaticResource SectionLabelStyle}"
+                                           Margin="2,22,0,10"/>
+                                <ItemsControl x:Name="AlbumList" ItemsSource="{Binding Albums}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Border x:Name="Row" CornerRadius="6" Padding="10,8" Margin="0,1"
-                                                    Background="Transparent">
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="30"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock Text="{Binding Number}"
-                                                               Foreground="{StaticResource TextSecondaryBrush}"
-                                                               FontSize="13" VerticalAlignment="Center"/>
-                                                    <StackPanel Grid.Column="1" Margin="6,0,0,0">
-                                                        <TextBlock Text="{Binding Title}" FontSize="13.5" FontWeight="Medium"
-                                                                   TextTrimming="CharacterEllipsis"/>
-                                                        <TextBlock Text="{Binding Artist}" FontSize="11.5"
-                                                                   Foreground="{StaticResource TextSecondaryBrush}"
-                                                                   Margin="0,1,0,0" TextTrimming="CharacterEllipsis"/>
-                                                    </StackPanel>
-                                                    <TextBlock Grid.Column="2" Text="{Binding Duration}"
-                                                               Foreground="{StaticResource TextSecondaryBrush}"
-                                                               FontSize="12" VerticalAlignment="Center" Margin="8,0,0,0"/>
-                                                </Grid>
-                                            </Border>
-                                            <DataTemplate.Triggers>
-                                                <Trigger SourceName="Row" Property="IsMouseOver" Value="True">
-                                                    <Setter TargetName="Row" Property="Background" Value="#12FFFFFF"/>
-                                                </Trigger>
-                                            </DataTemplate.Triggers>
+                                            <Button Tag="{Binding Album}" Click="AlbumTile_Click" Margin="0,0,10,10" Cursor="Hand"
+                                                    Background="Transparent" BorderThickness="0" FocusVisualStyle="{x:Null}">
+                                                <Border Width="176" Height="96" CornerRadius="8" Background="{Binding Brush}">
+                                                    <Grid Margin="14">
+                                                        <TextBlock Text="{Binding Badge}" FontSize="26" FontWeight="Bold"
+                                                                   VerticalAlignment="Top" Foreground="#55FFFFFF"/>
+                                                        <StackPanel VerticalAlignment="Bottom">
+                                                            <TextBlock Text="{Binding Album}" FontSize="13.5" FontWeight="SemiBold"
+                                                                       Foreground="#F2FFFFFF" TextTrimming="CharacterEllipsis"/>
+                                                            <TextBlock Text="{Binding Count, StringFormat={}{0} 首}" FontSize="11"
+                                                                       Foreground="#B8FFFFFF" Margin="0,2,0,0"/>
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </Border>
+                                            </Button>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Grid>
+
+                    <!-- ===== 歌库 ===== -->
+                    <Grid x:Name="LibraryPanel" Visibility="Collapsed" Margin="0,48,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,6,0,12">
+                            <Button Style="{StaticResource GlowButtonStyle}" Click="ImportFolderButton_Click" fx:Glow.IsEnabled="True">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE8B7;" FontFamily="{StaticResource IconFont}" FontSize="15" VerticalAlignment="Center"/>
+                                    <TextBlock Text="导入音乐文件夹" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{StaticResource GlowButtonStyle}" Margin="8,0,0,0" Click="PlayAllButton_Click" fx:Glow.IsEnabled="True">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE768;" FontFamily="{StaticResource IconFont}" FontSize="15" VerticalAlignment="Center"/>
+                                    <TextBlock Text="播放全部" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                            <TextBlock x:Name="LibraryCountText" Text="" FontSize="12.5"
+                                       Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Center" Margin="14,0,0,0"/>
+                        </StackPanel>
+
+                        <Border Grid.Row="1" Style="{StaticResource GlassCardStyle}">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                <ListBox x:Name="LibraryList" Background="Transparent" BorderThickness="0"
+                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                         MouseDoubleClick="LibraryList_MouseDoubleClick"
+                                         ItemsSource="{Binding Songs}">
+                                    <ListBox.ItemContainerStyle>
+                                        <Style TargetType="ListBoxItem">
+                                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="ListBoxItem">
+                                                        <Border x:Name="Row" CornerRadius="6" Padding="12,9" Margin="2,1" Background="Transparent">
+                                                            <ContentPresenter/>
+                                                        </Border>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter TargetName="Row" Property="Background" Value="#14FFFFFF"/>
+                                                            </Trigger>
+                                                            <Trigger Property="IsSelected" Value="True">
+                                                                <Setter TargetName="Row" Property="Background" Value="#22FFFFFF"/>
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </ListBox.ItemContainerStyle>
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="34"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="180"/>
+                                                        <ColumnDefinition Width="64"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock x:Name="NumberText" Text="{Binding Number}"
+                                                               Foreground="{StaticResource TextSecondaryBrush}" FontSize="13"
+                                                               VerticalAlignment="Center"/>
+                                                    <TextBlock x:Name="PlayGlyph" Text="&#xE768;" FontFamily="{StaticResource IconFont}"
+                                                               FontSize="13" Visibility="Collapsed" Foreground="{StaticResource AccentBrush}"
+                                                               VerticalAlignment="Center"/>
+                                                    <StackPanel Grid.Column="1" Margin="6,0,0,0" VerticalAlignment="Center">
+                                                        <TextBlock x:Name="TitleText" Text="{Binding Title}" FontSize="13.5"
+                                                                   FontWeight="Medium" TextTrimming="CharacterEllipsis"/>
+                                                        <TextBlock Text="{Binding Artist}" FontSize="11.5" Foreground="{StaticResource TextSecondaryBrush}"
+                                                                   Margin="0,2,0,0" TextTrimming="CharacterEllipsis"/>
+                                                    </StackPanel>
+                                                    <TextBlock Grid.Column="2" Text="{Binding Album}" FontSize="12"
+                                                               Foreground="{StaticResource TextSecondaryBrush}" Margin="12,0,0,0"
+                                                               VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                                    <TextBlock Grid.Column="3" Text="{Binding DurationText}" FontSize="12"
+                                                               Foreground="{StaticResource TextSecondaryBrush}" Margin="8,0,0,0"
+                                                               VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                                </Grid>
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsPlaying}" Value="True">
+                                                                <Setter Property="Background" Value="#1A59B8FF"/>
+                                                                <Setter Property="CornerRadius" Value="6"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                            </Border>
+                                            <DataTemplate.Triggers>
+                                                <DataTrigger Binding="{Binding IsPlaying}" Value="True">
+                                                    <Setter TargetName="NumberText" Property="Visibility" Value="Collapsed"/>
+                                                    <Setter TargetName="PlayGlyph" Property="Visibility" Value="Visible"/>
+                                                    <Setter TargetName="TitleText" Property="Foreground" Value="{StaticResource AccentBrush}"/>
+                                                </DataTrigger>
+                                            </DataTemplate.Triggers>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
                             </ScrollViewer>
-                        </Grid>
-                    </Border>
+                        </Border>
+                    </Grid>
+
+                    <!-- ===== 播放列表 ===== -->
+                    <Grid x:Name="PlaylistPanel" Visibility="Collapsed" Margin="0,48,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Orientation="Horizontal" Margin="0,6,0,12">
+                            <TextBlock Text="当前队列" FontSize="13.5" Foreground="{StaticResource TextSecondaryBrush}"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock x:Name="QueueCountText" Text="" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}"
+                                       VerticalAlignment="Center" Margin="12,0,0,0"/>
+                        </StackPanel>
+                        <Border Grid.Row="1" Style="{StaticResource GlassCardStyle}">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <ListBox x:Name="QueueList" Background="Transparent" BorderThickness="0"
+                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                         MouseDoubleClick="QueueList_MouseDoubleClick"
+                                         ItemsSource="{Binding Songs}">
+                                    <ListBox.ItemContainerStyle>
+                                        <Style TargetType="ListBoxItem">
+                                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="ListBoxItem">
+                                                        <Border x:Name="Row" CornerRadius="6" Padding="12,9" Margin="2,1" Background="Transparent">
+                                                            <ContentPresenter/>
+                                                        </Border>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter TargetName="Row" Property="Background" Value="#14FFFFFF"/>
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </ListBox.ItemContainerStyle>
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="34"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="64"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock x:Name="NumberText" Text="{Binding Number}"
+                                                           Foreground="{StaticResource TextSecondaryBrush}" FontSize="13"
+                                                           VerticalAlignment="Center"/>
+                                                <TextBlock x:Name="PlayGlyph" Text="&#xE768;" FontFamily="{StaticResource IconFont}"
+                                                           FontSize="13" Visibility="Collapsed" Foreground="{StaticResource AccentBrush}"
+                                                           VerticalAlignment="Center"/>
+                                                <StackPanel Grid.Column="1" Margin="6,0,0,0">
+                                                    <TextBlock x:Name="TitleText" Text="{Binding Title}" FontSize="13.5" FontWeight="Medium"
+                                                               TextTrimming="CharacterEllipsis"/>
+                                                    <TextBlock Text="{Binding ArtistAlbum}" FontSize="11.5"
+                                                               Foreground="{StaticResource TextSecondaryBrush}" Margin="0,2,0,0"/>
+                                                </StackPanel>
+                                                <TextBlock Grid.Column="2" Text="{Binding DurationText}" FontSize="12"
+                                                           Foreground="{StaticResource TextSecondaryBrush}" Margin="8,0,0,0"
+                                                           VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                            </Grid>
+                                            <DataTemplate.Triggers>
+                                                <DataTrigger Binding="{Binding IsPlaying}" Value="True">
+                                                    <Setter TargetName="NumberText" Property="Visibility" Value="Collapsed"/>
+                                                    <Setter TargetName="PlayGlyph" Property="Visibility" Value="Visible"/>
+                                                    <Setter TargetName="TitleText" Property="Foreground" Value="{StaticResource AccentBrush}"/>
+                                                </DataTrigger>
+                                            </DataTemplate.Triggers>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </ScrollViewer>
+                        </Border>
+                    </Grid>
+
+                    <!-- ===== 设置 ===== -->
+                    <Grid x:Name="SettingsPanel" Visibility="Collapsed" Margin="0,48,0,0">
+                        <Border Style="{StaticResource GlassCardStyle}" Width="460" HorizontalAlignment="Left" Padding="22">
+                            <StackPanel>
+                                <TextBlock Text="曲库位置" FontSize="15" FontWeight="SemiBold"/>
+                                <TextBlock x:Name="FolderPathText" Text="尚未选择音乐文件夹" FontSize="12.5"
+                                           Foreground="{StaticResource TextSecondaryBrush}" Margin="0,6,0,14" TextWrapping="Wrap"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Style="{StaticResource GlowButtonStyle}" Click="ImportFolderButton_Click" fx:Glow.IsEnabled="True">
+                                        <TextBlock Text="选择文件夹"/>
+                                    </Button>
+                                    <Button Style="{StaticResource GlowButtonStyle}" Margin="8,0,0,0"
+                                            Click="RefreshFolderButton_Click" fx:Glow.IsEnabled="True">
+                                        <TextBlock Text="重新扫描"/>
+                                    </Button>
+                                </StackPanel>
+
+                                <Rectangle Height="1" Fill="#1AFFFFFF" Margin="0,22,0,20"/>
+                                <TextBlock Text="音量" FontSize="13" Foreground="{StaticResource TextSecondaryBrush}"/>
+                                <Slider x:Name="VolumeSlider" Style="{StaticResource ProgressSliderStyle}" Minimum="0"
+                                        Maximum="100" Value="70" Margin="0,10,0,0"
+                                        ValueChanged="VolumeSlider_ValueChanged"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
                 </Grid>
+
+                <!-- ============ 底部常驻播放栏 ============ -->
+                <Border Grid.Row="2" Style="{StaticResource GlassCardStyle}" Height="86" Margin="0,12,0,0">
+                    <Grid Margin="16,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="56"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- 封面 -->
+                        <Grid>
+                            <Border Width="52" Height="52" CornerRadius="8" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#FF5C8A" Offset="0"/>
+                                        <GradientStop Color="#8B5CF6" Offset="0.55"/>
+                                        <GradientStop Color="#59C2FF" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Border.Effect><DropShadowEffect BlurRadius="20" ShadowDepth="0" Opacity="0.4" Color="#000000"/></Border.Effect>
+                                <TextBlock Text="&#xE8D6;" FontFamily="{StaticResource IconFont}" FontSize="22"
+                                           Foreground="#70FFFFFF" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </Grid>
+
+                        <!-- 标题 + 进度 -->
+                        <Grid Grid.Column="1" Margin="16,0,16,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock x:Name="NowTitleText" Text="未在播放" FontSize="14" FontWeight="SemiBold"
+                                           MaxWidth="280" TextTrimming="CharacterEllipsis"/>
+                                <TextBlock x:Name="NowArtistText" Text="" FontSize="12.5"
+                                           Foreground="{StaticResource TextSecondaryBrush}" Margin="10,0,0,0"
+                                           MaxWidth="240" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <Grid Grid.Row="1" Margin="0,6,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock x:Name="SeekTimeText" Text="0:00" FontSize="11"
+                                           Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Center"/>
+                                <Slider x:Name="SeekSlider" Grid.Column="1" Style="{StaticResource ProgressSliderStyle}"
+                                        Minimum="0" Maximum="1" Value="0" Margin="8,0"
+                                        PreviewMouseDown="SeekSlider_PreviewMouseDown"
+                                        PreviewMouseUp="SeekSlider_PreviewMouseUp"
+                                        ValueChanged="SeekSlider_ValueChanged"/>
+                                <TextBlock x:Name="SeekTotalText" Grid.Column="2" Text="0:00" FontSize="11"
+                                           Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Grid>
+
+                        <!-- 播放控制 + 音量 -->
+                        <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                            <Button Style="{StaticResource RoundIconButtonStyle}" Width="34" Height="34"
+                                    Click="PrevButton_Click" ToolTip="上一首" fx:Glow.IsEnabled="True">
+                                <TextBlock Text="&#xE892;" FontFamily="{StaticResource IconFont}" FontSize="12"/>
+                            </Button>
+                            <Button x:Name="NowPlayButton" Style="{StaticResource RoundPlayButtonStyle}" Margin="10,0"
+                                    Click="PlayPauseButton_Click" ToolTip="播放 / 暂停" fx:Glow.IsEnabled="True">
+                                <TextBlock x:Name="PlayPauseIcon" Text="&#xE768;" FontFamily="{StaticResource IconFont}" FontSize="18"/>
+                            </Button>
+                            <Button Style="{StaticResource RoundIconButtonStyle}" Width="34" Height="34"
+                                    Click="NextButton_Click" ToolTip="下一首" fx:Glow.IsEnabled="True">
+                                <TextBlock Text="&#xE893;" FontFamily="{StaticResource IconFont}" FontSize="12"/>
+                            </Button>
+                            <Rectangle Width="1" Height="26" Fill="#1AFFFFFF" Margin="20,0"/>
+                            <TextBlock Text="&#xE767;" FontFamily="{StaticResource IconFont}" FontSize="15"
+                                       VerticalAlignment="Center" Foreground="{StaticResource TextSecondaryBrush}"/>
+                            <Slider x:Name="BottomVolumeSlider" Width="90" Margin="8,0,0,0" Style="{StaticResource ProgressSliderStyle}" Minimum="0"
+                                    Maximum="100" Value="70" ValueChanged="VolumeSlider_ValueChanged"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
             </Grid>
         </Grid>
     </Grid>
